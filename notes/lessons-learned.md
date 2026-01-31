@@ -95,3 +95,9 @@ Lesson learned:
 Autopilot device recognition is hardware-based, not installation-based.
 Device resets do not invalidate Autopilot registration.
 
+
+### Update Rings vs Feature Updates
+Lesson learned:
+A successful Update Ring assignment does not guarantee a visible OS version change.
+Windows version control requires a dedicated Feature Update Policy.
+
