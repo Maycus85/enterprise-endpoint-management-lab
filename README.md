@@ -1,18 +1,101 @@
-# intune-autopilot-reference-lab
-Hands-on reference lab for Microsoft Intune, Autopilot, Entra ID and modern device management. Built for learning, certification (MD-102) and real-world scenarios.
-# Intune & Autopilot Reference Lab
+# Modern Endpoint Engineering Lab
 
-This repository documents a hands-on reference lab for Microsoft Intune, Windows Autopilot and Entra ID.
+Hands-on reference environment for designing and validating modern workplace security using Microsoft Intune, Entra ID, Windows Autopilot and Conditional Access.
 
-## Goal
-Build and document a realistic modern workplace environment focusing on device enrollment, security, compliance and troubleshooting.
+This lab focuses on **real-world security architecture**, not just feature configuration.
 
-## Scope
-- Intune & Autopilot
-- Entra ID & Conditional Access
-- Windows device management
+---
 
-## Out of scope
-- On-prem Active Directory
-- Hybrid Join scenarios
-- Production workloads
+## 🎯 Objective
+
+Build and document a production-oriented modern device management environment that reflects how enterprises establish trust between:
+
+- User identity  
+- Device posture  
+- Compliance state  
+- Access control  
+
+The lab follows a Zero Trust-inspired model where **authentication alone is not sufficient — device trust is required.**
+
+---
+
+## 🧠 Architecture Focus
+
+Rather than documenting isolated features, this repository follows the lifecycle of modern endpoint security:
+
+1. **Identity** → Who is requesting access?  
+2. **Device Enrollment** → What device is being used?  
+3. **Compliance** → Can the device be trusted?  
+4. **Conditional Access** → Should access be granted?
+
+👉 Together, these layers form the foundation of a Zero Trust access model.
+
+---
+
+## 🔐 Key Security Scenario Implemented
+
+✔ Enrolled a Windows device into Intune  
+✔ Forced a non-compliant state intentionally  
+✔ Implemented Conditional Access requiring compliant devices  
+✔ Validated enforcement through sign-in telemetry  
+✔ Successfully blocked cloud access from an untrusted device  
+
+This demonstrates how device posture directly impacts authorization decisions.
+
+---
+
+## 📚 Repository Structure
+
+docs/md102/
+
+identity-access.md
+→ Identity foundation and access concepts
+
+device-enrollment.md
+→ Azure AD Join and MDM enrollment
+
+compliance-security.md
+→ Device trust evaluation
+
+conditional-access-enforcement.md
+→ Access control based on compliance state
+
+
+---
+
+## 🎓 Purpose
+
+This repository serves as:
+
+- A deep technical learning environment  
+- MD-102 certification support  
+- A security architecture reference  
+- A demonstration of practical endpoint engineering skills  
+
+---
+
+## 🚫 Out of Scope
+
+To maintain architectural clarity, this lab intentionally excludes:
+
+- On-prem Active Directory  
+- Hybrid Join  
+- Legacy management models  
+- Production workloads  
+
+The focus is fully on **cloud-native device management.**
+
+---
+
+## 🚀 Direction
+
+Future expansions will explore:
+
+- Device remediation workflows  
+- Risk-based Conditional Access  
+- MFA + device trust layering  
+- Update governance  
+- Security baselines  
+- Endpoint hardening  
+
+Goal: evolve toward a mature enterprise-grade Zero Trust model.
