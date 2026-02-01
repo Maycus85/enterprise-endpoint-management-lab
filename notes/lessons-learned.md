@@ -101,3 +101,11 @@ Lesson learned:
 A successful Update Ring assignment does not guarantee a visible OS version change.
 Windows version control requires a dedicated Feature Update Policy.
 
+### Lesson learned: Custom Compliance limitations
+
+- Custom compliance policies may remain in "Not applicable" state
+- Behavior is tenant- and timing-dependent
+- Not suitable for deterministic Conditional Access demonstrations
+- Prefer user- and app-based Conditional Access conditions for testing and documentation
+
+
