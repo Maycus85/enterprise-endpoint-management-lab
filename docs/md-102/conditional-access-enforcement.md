@@ -162,3 +162,21 @@ Future labs will focus on:
 - Dynamic device targeting  
 
 Goal: evolve toward a fully mature Zero Trust architecture.
+
+## Restoring Device Trust
+
+To validate the full access lifecycle, the device was intentionally returned to a compliant state.
+
+**Steps performed:**
+- Adjusted compliance policy requirements  
+- Triggered device sync  
+- Verified compliance status change  
+- Re-tested Conditional Access  
+
+**Result:**
+Access to cloud resources was successfully restored once the device regained a trusted posture.
+
+**Insight:**
+Security enforcement must always provide a remediation path.  
+Compliance acts as a dynamic trust signal that directly influences authorization decisions.
+
