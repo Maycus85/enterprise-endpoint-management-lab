@@ -6,7 +6,7 @@ Hands-on reference environment for designing and validating modern workplace sec
 
 ## Project Overview
 
-Organizations moving to a cloud-first workforce need a way to trust devices, not just users — a lost or unmanaged laptop shouldn't be able to reach company data just because someone signed in correctly. This lab documents a complete Zero Trust device management environment: from identity, through enrollment and compliance evaluation, to access enforcement.
+Organizations moving to a cloud-first workforce need a way to trust devices, not just users, a lost or unmanaged laptop shouldn't be able to reach company data just because someone signed in correctly. This lab documents a complete Zero Trust device management environment: from identity, through enrollment and compliance evaluation, to access enforcement.
 
 This lab focuses on **real-world security architecture**, not just feature configuration.
 
@@ -47,7 +47,7 @@ Together, these layers form the foundation of a Zero Trust access model.
 - Validated enforcement through sign-in telemetry
 - Successfully blocked cloud access from an untrusted device
 
-This demonstrates how device posture directly impacts authorization decisions — not just theoretically, but validated end-to-end in a live tenant.
+This demonstrates how device posture directly impacts authorization decisions, not just theoretically, but validated end-to-end in a live tenant.
 
 ---
 
@@ -78,10 +78,10 @@ Relevant values: `AzureAdJoined`, `DomainJoined`, `WorkplaceJoined`, tenant info
 A successful Entra join alone is not proof of successful Intune enrollment. Automatic enrollment only works when all of the following are met: a supported Intune license, the user being included in the MDM user scope, a supported Windows edition, a successful Entra join, and correct tenant/enrollment restrictions.
 
 ### Registered, joined, and enrolled are not the same thing
-The lab clarified the practical difference between Microsoft Entra **registered**, Entra **joined**, **hybrid** Entra joined, and Intune **enrolled** — four different states describing different aspects of device identity and management, easy to conflate when troubleshooting.
+The lab clarified the practical difference between Microsoft Entra **registered**, Entra **joined**, **hybrid** Entra joined, and Intune **enrolled** - four different states describing different aspects of device identity and management, easy to conflate when troubleshooting.
 
 ### Device visibility and policy deployment are not instantaneous
-The device did not always appear immediately across Entra ID, Intune, and the Windows client — synchronization takes time. Before assuming a configuration failed, a manual sync and another device check-in should be triggered first. The same applies to policies: assignment, include/exclude groups, enrollment status, last check-in, OS applicability, and sync status should all be verified before troubleshooting the policy content itself.
+The device did not always appear immediately across Entra ID, Intune, and the Windows client, synchronization takes time. Before assuming a configuration failed, a manual sync and another device check-in should be triggered first. The same applies to policies: assignment, include/exclude groups, enrollment status, last check-in, OS applicability, and sync status should all be verified before troubleshooting the policy content itself.
 
 ### Conditional Access needs careful staged testing
 Conditional Access can block access before a device is fully enrolled and compliant. In lab environments, policies should first run in **report-only mode** or be scoped to a dedicated test group, with emergency/admin accounts excluded to avoid accidental lockout.
