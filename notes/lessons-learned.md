@@ -16,9 +16,7 @@ Lesson learned:
 Conditional Access & Compliance (Practice Lab)
 
 Lesson learned:
-
-- Configuration Policies enforce state but may not provide reliable or immediate reporting.
-- Compliance Policies evaluate state and are the authoritative source for device compliance.
+- Configuration Policies enforce settings, while Compliance Policies evaluate device state as a compliance signal that Conditional Access can use.
 - Conditional Access is evaluated per sign-in, not per device check-in.
 - “Not applied” in Conditional Access does not indicate misconfiguration, only that scope or conditions did not match.
 - Device-level views (device compliance, device configuration) are more reliable than policy summary dashboards.
