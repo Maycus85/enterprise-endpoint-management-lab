@@ -1,5 +1,7 @@
 # Phase 3 – Conditional Access & Device Compliance Enforcement
 
+> **Project status:** Core reference scenario completed. Additional scenarios are optional future extensions, not planned work.
+
 ## 🎯 Objective
 Implement a Zero Trust access control model by enforcing Conditional Access policies that restrict cloud resource access to compliant devices only.
 
@@ -22,7 +24,7 @@ By combining these layers, access decisions move beyond credentials toward a pos
 ## ⚙️ Implementation Steps
 
 ### 1. Device Enrollment
-- Windows VM was Azure AD joined.
+- Windows VM was Microsoft Entra joined.
 - Device successfully enrolled into Microsoft Intune.
 - Verified MDM authority and device visibility in both Entra ID and Intune.
 
@@ -58,7 +60,7 @@ Instead of targeting all users immediately, a **pilot-first approach** was used.
 - Excluded: Global Admin (Safety Net)
 
 **Target Resources:**
-- All Cloud Apps (via Microsoft Graph)
+- All cloud resources
 
 **Grant Control:**
 ✔ Require device to be marked as compliant.
@@ -115,10 +117,8 @@ This demonstrates a fundamental Zero Trust principle:
 
 ---
 
-### Conditional Access Protects Tokens — Not Apps
-Blocking Microsoft Graph effectively prevents access to nearly all Microsoft 365 services.
-
-Control the token → control the environment.
+### Conditional Access Protects Token Issuance
+Conditional Access evaluates access to protected cloud resources during token issuance. Controlling token issuance allows access decisions to be enforced before the user ever reaches the target service.
 
 ---
 
@@ -150,9 +150,9 @@ Successfully implemented a posture-based access control model where:
 
 ---
 
-## 📌 Next Phase
+## 📌 Possible Future Extensions (not currently planned)
 
-Future labs will focus on:
+If revisited, this could optionally extend to:
 
 - Device remediation workflows  
 - Restoring compliance states  
@@ -161,7 +161,7 @@ Future labs will focus on:
 - Session controls  
 - Dynamic device targeting  
 
-Goal: evolve toward a fully mature Zero Trust architecture.
+These are ideas for a potential follow-up, not committed roadmap items.
 
 ## Restoring Device Trust
 
