@@ -109,6 +109,32 @@ Custom compliance policies sometimes stayed in "Not applicable" in a tenant- and
 
 ---
 
+## Prerequisites
+
+- Microsoft 365 Business Premium or equivalent licenses
+- Microsoft Intune
+- Microsoft Entra ID P1
+- Windows 11 VM (Hyper-V, Gen2, TPM enabled)
+- Test user account
+- Separate emergency/admin account (excluded from test policies)
+- Test tenant only, no production environment
+
+---
+
+## Technologies and Skills
+
+- Microsoft Intune
+- Microsoft Entra ID
+- Windows Autopilot
+- Conditional Access
+- Compliance Policies
+- Configuration Profiles
+- Windows Update for Business
+- Sign-in Log Analysis
+- Zero Trust architecture
+
+---
+
 ## Purpose
 
 This repository serves as:
