@@ -6,13 +6,15 @@ Hands-on reference environment for designing and validating modern workplace sec
 
 ## Project Overview
 
-Organizations moving to a cloud-first workforce need a way to trust devices, not just users, a lost or unmanaged laptop shouldn't be able to reach company data just because someone signed in correctly. This lab documents a complete Zero Trust device management environment: from identity, through enrollment and compliance evaluation, to access enforcement.
+Organizations moving to a cloud-first workforce need a way to trust devices, not just users — a lost or unmanaged laptop shouldn't be able to reach company data just because someone signed in correctly. This lab documents a complete Zero Trust device management environment: from identity, through enrollment and compliance evaluation, to access enforcement.
 
 This lab focuses on **real-world security architecture**, not just feature configuration.
 
 ---
 
 ## Architecture Overview
+
+![Architecture: Autopilot, Entra ID, Intune, Conditional Access](architecture/autopilot-entra-intune-ca.png)
 
 ```mermaid
 flowchart LR
@@ -46,55 +48,64 @@ Together, these layers form the foundation of a Zero Trust access model.
 - Implemented Conditional Access requiring compliant devices
 - Validated enforcement through sign-in telemetry
 - Successfully blocked cloud access from an untrusted device
+- Restored device trust and re-validated access after remediation
 
-This demonstrates how device posture directly impacts authorization decisions, not just theoretically, but validated end-to-end in a live tenant.
+This demonstrates how device posture directly impacts authorization decisions — not just theoretically, but validated end-to-end in a live tenant. Full walkthrough with policy names, report-only testing, and sign-in log validation: [`docs/md-102/conditional-access-enforcement.md`](docs/md-102/conditional-access-enforcement.md)
 
 ---
 
 ## Repository Structure
 
 ```
-docs/md102/
-├── identity-access.md              → Identity foundation and access concepts
-├── device-enrollment.md            → Azure AD Join and MDM enrollment (Autopilot)
-├── compliance-security.md          → Device trust evaluation
-└── conditional-access-enforcement.md → Access control based on compliance state
+architecture/
+└── autopilot-entra-intune-ca.png     → End-to-end architecture diagram
+
+docs/md-102/
+└── conditional-access-enforcement.md → Full Zero Trust scenario: policy design,
+                                         report-only testing, enforcement, remediation
+
+docs/practice/
+├── tenant-setup.md                   → Lab tenant, admin roles, groups
+├── autopilot.md                      → Autopilot deployment walkthrough
+├── autopilot-flow.md                 → Full Autopilot → Entra → Intune → CA execution order
+├── identity-access.md                → Conditional Access practice notes
+├── enrollment.md                     → Policy scope troubleshooting (device vs. user)
+├── conditional-access-vs-compliance.md → Clear separation of CA, Compliance, Configuration
+└── windows-update-for-business.md    → Update Rings vs. Feature Update Policies
+
+notes/
+└── lessons-learned.md                → Real issues hit during this lab, root causes, fixes
 ```
 
 ---
 
 ## Lessons Learned / Troubleshooting
 
-### Entra ID join and Intune enrollment are separate processes
-Creating a device identity in Microsoft Entra ID does not automatically mean the device is managed by Microsoft Intune. Join state and MDM enrollment state must be checked separately:
+*Full detail in [`notes/lessons-learned.md`](notes/lessons-learned.md) — summary below.*
 
-```powershell
-dsregcmd /status
-```
+### Tenant verification deadlock
+Initial tenant got stuck in verification for over 7 days with billing actions blocked. Rebuilding a clean tenant turned out faster than waiting: **if verification exceeds ~5 days with billing blocked, rebuild rather than wait.**
 
-Relevant values: `AzureAdJoined`, `DomainJoined`, `WorkplaceJoined`, tenant information, device ID.
+### Device-only settings assigned to the wrong scope silently fail
+A BitLocker configuration policy showed zero evaluation results — not an error, just silence. Root cause: the policy was assigned to a **user** group although the setting was device-only. Reassigning it to a device group fixed evaluation immediately. **A valid policy with the wrong scope behaves as if it doesn't exist — no error, no signal.**
 
-### Automatic enrollment depends on several prerequisites
-A successful Entra join alone is not proof of successful Intune enrollment. Automatic enrollment only works when all of the following are met: a supported Intune license, the user being included in the MDM user scope, a supported Windows edition, a successful Entra join, and correct tenant/enrollment restrictions.
+### Configuration Policies enforce; Compliance Policies report
+A configuration policy successfully enforced BitLocker, but its policy-level reporting stayed empty — because the device already met the required state before assignment. Configuration policies enforce state; compliance policies evaluate state and are the authoritative signal for Conditional Access. **Policy-overview dashboards lag; device-level views are the reliable source of truth.**
 
-### Registered, joined, and enrolled are not the same thing
-The lab clarified the practical difference between Microsoft Entra **registered**, Entra **joined**, **hybrid** Entra joined, and Intune **enrolled** - four different states describing different aspects of device identity and management, easy to conflate when troubleshooting.
+### Autopilot Device Preparation depends on service principal permissions, not admin roles
+Device Preparation policy creation failed with an ownership error on the target group — caused by the Intune Provisioning Client service principal not being an owner of that group, independent of the admin account's own permissions. Assigning the service principal as group owner resolved it.
 
-### Device visibility and policy deployment are not instantaneous
-The device did not always appear immediately across Entra ID, Intune, and the Windows client, synchronization takes time. Before assuming a configuration failed, a manual sync and another device check-in should be triggered first. The same applies to policies: assignment, include/exclude groups, enrollment status, last check-in, OS applicability, and sync status should all be verified before troubleshooting the policy content itself.
+### Enrollment must succeed before compliance can be evaluated
+Initial assumption was that a device must be compliant before it can enroll. Actual behavior is the reverse: sign-in and enrollment happen first, compliance is evaluated afterward, and Conditional Access only enforces it at resource access — not during setup.
 
-### Conditional Access needs careful staged testing
-Conditional Access can block access before a device is fully enrolled and compliant. In lab environments, policies should first run in **report-only mode** or be scoped to a dedicated test group, with emergency/admin accounts excluded to avoid accidental lockout.
+### Hardware hash registration is hardware-based, not installation-based
+After a device reset, Windows still reported the device as already registered — the hardware hash persists until explicitly removed from Autopilot, regardless of how many times the OS is reinstalled.
 
-### Troubleshooting should follow the management chain
-A reliable order that avoids chasing the wrong layer:
-1. Verify the Windows device state (`dsregcmd /status`)
-2. Verify the Microsoft Entra device object
-3. Verify the Intune enrollment
-4. Verify licensing and MDM scope
-5. Verify group membership and assignments
-6. Trigger synchronization
-7. Review policy and enrollment logs
+### Update Rings ≠ Feature Update Policies
+A successful Update Ring assignment doesn't guarantee a visible OS version change — Update Rings control *how* updates roll out (timing, deferral, restarts), while a separate Feature Update Policy is required to control *which* Windows version is targeted.
+
+### Custom Compliance Policies can be unreliable for demos
+Custom compliance policies sometimes stayed in "Not applicable" in a tenant- and timing-dependent way — not suitable for deterministic Conditional Access demonstrations. User- and app-based CA conditions proved more reliable for testing and documentation.
 
 ---
 
