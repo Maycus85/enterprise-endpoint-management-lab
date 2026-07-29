@@ -130,16 +130,3 @@ To maintain architectural clarity, this lab intentionally excludes:
 - Production workloads
 
 The focus is fully on **cloud-native device management.**
-
----
-
-## Direction
-
-Future expansions will explore:
-
-- Device remediation workflows
-- Risk-based Conditional Access
-- MFA + device trust layering
-- Update governance
-- Security baselines
-- Endpoint hardening
